@@ -2,9 +2,11 @@
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" ]; then
 
+  REPO=github.com/watson-developer-cloud/java-sdk.git
+
   git config --global user.email "wps@us.ibm.com"
   git config --global user.name "Watson Github Bot"
-  git clone --quiet --branch=gh-pages https://${GITHUB_TOKEN_DOCS}@github.com/watson-developer-cloud/java-sdk gh-pages > /dev/null
+  git clone --quiet --branch=gh-pages git://${REPO} gh-pages > /dev/null
 
   pushd gh-pages
     # on tagged builds, $TRAVIS_BRANCH is the tag (e.g. v1.2.3), otherwise it's the branch name (e.g. master)
@@ -23,7 +25,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" ]; then
 
     git add -f .
     git commit -m "Latest javadoc for $TRAVIS_BRANCH ($TRAVIS_COMMIT)"
-    git push -fq origin gh-pages > /dev/null
+    git push -fq https://${GITHUB_TOKEN_DOCS}@${REPO} gh-pages > /dev/null
 
   popd
 
